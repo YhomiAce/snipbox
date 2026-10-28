@@ -1,0 +1,24 @@
+<%- include("partials/header") %>
+<% if (burned) { %>
+  <p class="alert warn">This snippet was set to burn after reading. It has now been deleted; copy what you need before leaving this page.</p>
+<% } %>
+<article class="card snippet">
+  <div class="snippet-head">
+    <div>
+      <h1><%= snippet.title %></h1>
+      <div class="meta">
+        <span class="tag"><%= languageLabel(snippet.language) %></span>
+        <span><%= lineCount %> <%= lineCount === 1 ? "line" : "lines" %></span>
+        <span>Created <%= formatDate(snippet.createdAt) %></span>
+        <span>Expires <%= timeLeft(snippet.expiresAt) %></span>
+        <% if (snippet.visibility === "unlisted") { %><span class="tag">unlisted</span><% } %>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" data-copy-target="#code">Copy</button>
+      <% if (!burned) { %><a class="btn" href="/raw/<%= snippet._id %>">Raw</a><% } %>
+    </div>
+  </div>
+  <div id="code" class="code"><%- html %></div>
+</article>
+<%- include("partials/footer") %>

@@ -1,0 +1,12 @@
+<%- include("partials/header") %>
+<section class="card narrow">
+  <h1>Snippet created</h1>
+  <p><strong><%= snippet.title %></strong> will be deleted the first time someone opens it. Share this link once:</p>
+  <div class="share">
+    <input id="share-link" type="text" readonly value="<%= link %>">
+    <button type="button" class="btn primary" data-copy-target="#share-link">Copy link</button>
+  </div>
+  <p class="muted">Opening the link yourself will burn the snippet.</p>
+  <p><a href="/">← Create another</a></p>
+</section>
+<%- include("partials/footer") %>

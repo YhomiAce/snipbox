@@ -1,0 +1,70 @@
+<%- include("partials/header") %>
+<div class="layout">
+  <section class="card">
+    <h1>New snippet</h1>
+    <% if (errors.form) { %><p class="alert error"><%= errors.form %></p><% } %>
+    <form method="post" action="/snippets" class="snippet-form">
+      <label class="field">
+        <span>Title</span>
+        <input type="text" name="title" maxlength="120" placeholder="Untitled" value="<%= form.title %>">
+        <% if (errors.title) { %><small class="error-text"><%= errors.title %></small><% } %>
+      </label>
+      <div class="row">
+        <label class="field">
+          <span>Language</span>
+          <select name="language">
+            <% for (const lang of languages) { %>
+              <option value="<%= lang.id %>" <%= form.language === lang.id ? "selected" : "" %>><%= lang.label %></option>
+            <% } %>
+          </select>
+          <% if (errors.language) { %><small class="error-text"><%= errors.language %></small><% } %>
+        </label>
+        <label class="field">
+          <span>Expires</span>
+          <select name="expiry">
+            <% for (const [key, opt] of Object.entries(expiryOptions)) { %>
+              <option value="<%= key %>" <%= form.expiry === key ? "selected" : "" %>><%= opt.label %></option>
+            <% } %>
+          </select>
+          <% if (errors.expiry) { %><small class="error-text"><%= errors.expiry %></small><% } %>
+        </label>
+        <label class="field">
+          <span>Visibility</span>
+          <select name="visibility">
+            <option value="public" <%= form.visibility === "public" ? "selected" : "" %>>Public</option>
+            <option value="unlisted" <%= form.visibility === "unlisted" ? "selected" : "" %>>Unlisted</option>
+          </select>
+        </label>
+      </div>
+      <label class="field">
+        <span>Content <small class="muted">(max 200 KB)</small></span>
+        <textarea name="content" rows="16" spellcheck="false" required placeholder="Paste your code here"><%= form.content %></textarea>
+        <% if (errors.content) { %><small class="error-text"><%= errors.content %></small><% } %>
+      </label>
+      <div class="form-footer">
+        <label class="check">
+          <input type="checkbox" name="burnAfterRead" <%= form.burnAfterRead ? "checked" : "" %>>
+          Burn after read <small class="muted">(deleted after the first view)</small>
+        </label>
+        <button type="submit" class="btn primary">Create snippet</button>
+      </div>
+    </form>
+  </section>
+
+  <aside class="card recent">
+    <h2>Recent public snippets</h2>
+    <% if (recent.length === 0) { %>
+      <p class="muted">Nothing yet. Be the first!</p>
+    <% } else { %>
+      <ul>
+        <% for (const s of recent) { %>
+          <li>
+            <a href="/s/<%= s._id %>"><%= s.title %></a>
+            <div class="meta"><span class="tag"><%= languageLabel(s.language) %></span> <%= formatDate(s.createdAt) %></div>
+          </li>
+        <% } %>
+      </ul>
+    <% } %>
+  </aside>
+</div>
+<%- include("partials/footer") %>
